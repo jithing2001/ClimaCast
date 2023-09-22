@@ -1,8 +1,13 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:weatherapp/homescreen.dart';
-import 'package:weatherapp/splashscreen.dart';
+import 'package:get/get.dart';
+import 'package:weatherapp/view/splash/splashscreen.dart';
 
-void main(List<String> args) {
+import 'controllers/permission_controller.dart';
+
+void main(List<String> args)async {
+    WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -11,13 +16,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    Get.put(PermissionController());
+    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primaryColor: Colors.black,
-      
       ),
-      home:  SplashScreen(),
+      home: SplashScreen(),
     );
   }
 }

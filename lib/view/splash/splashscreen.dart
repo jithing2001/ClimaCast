@@ -1,33 +1,29 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:weatherapp/homescreen.dart';
+import 'package:weatherapp/view/home/homescreen.dart';
+import 'package:weatherapp/view/register/register.dart';
 
-class SplashScreen extends StatefulWidget {
+class SplashScreen extends StatelessWidget {
   SplashScreen({super.key});
 
   @override
-  State<SplashScreen> createState() => _SplashScreenState();
-}
-
-class _SplashScreenState extends State<SplashScreen> {
-  @override
-  void initState() {
-    super.initState();
-     Future.delayed(
-        const Duration(seconds: 3),
-        () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const HomeScreen()),
-            ));
-  }
-
-  @override
   Widget build(BuildContext context) {
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      await Future.delayed(const Duration(seconds: 1));
+      final userLogin = FirebaseAuth.instance.currentUser;
+      if (userLogin == null) {
+        Get.off(const Register());
+      } else {
+        Get.off(HomeScreen());
+      }
+    });
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 77, 171, 238),
+      backgroundColor: const Color.fromARGB(255, 77, 171, 238),
       body: Column(
         children: [
-          SizedBox(
+          const SizedBox(
             height: 80,
           ),
           Padding(
@@ -45,9 +41,10 @@ class _SplashScreenState extends State<SplashScreen> {
               const SizedBox(width: 90),
               Center(
                 child: Text(
-                  'ClimaCast',
+                  'WeatherMate',
                   style: GoogleFonts.acme(
-                      color: const Color.fromARGB(255, 254, 252, 252), fontSize: 60),
+                      color: const Color.fromARGB(255, 254, 252, 252),
+                      fontSize: 50),
                 ),
               ),
             ],
